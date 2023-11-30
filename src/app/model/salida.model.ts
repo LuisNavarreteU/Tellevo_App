@@ -4,4 +4,5 @@ export interface Salida{
    hora: string,
    precio: number,
    capacidad: number,
+   usuario: string,
 }

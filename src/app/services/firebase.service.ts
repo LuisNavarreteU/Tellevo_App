@@ -1,18 +1,41 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { getAuth, signInWithEmailAndPassword, updateProfile, sendPasswordResetEmail, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  updateProfile,
+  sendPasswordResetEmail,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth';
 import { User } from '../model/user.model';
-import { getFirestore, doc, setDoc, getDoc, addDoc, collection, collectionData, query } from '@angular/fire/firestore';
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  addDoc,
+  collection,
+  collectionData,
+  query,
+  updateDoc,
+  deleteDoc,
+  Firestore,
+} from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UtilsService } from './utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { getStorage, uploadString, ref, getDownloadURL } from 'firebase/storage';
+import {
+  getStorage,
+  uploadString,
+  ref,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
-
   auth = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
   utilsSvc = inject(UtilsService);
@@ -35,7 +58,7 @@ export class FirebaseService {
 
   //------------ Actualizar usuario ----------
   updateUser(displayName: string) {
-    return updateProfile(getAuth().currentUser, { displayName })
+    return updateProfile(getAuth().currentUser, { displayName });
   }
 
   //------------ Recuperar contraseña  ----------
@@ -54,11 +77,11 @@ export class FirebaseService {
   // Obtener documentos de coleccion
   getColectionData(path: string, collectionQuery?: any) {
     const ref = collection(getFirestore(), path);
-    return collectionData(query(ref, collectionQuery), {idField: 'id'})
+    return collectionData(query(ref, collectionQuery), { idField: 'id' });
   }
   // Setear un documetno
   setDocumento(path: string, data: any) {
-    return setDoc(doc(getFirestore(), path), data)
+    return setDoc(doc(getFirestore(), path), data);
   }
 
   // Obtener un documetno
@@ -68,8 +91,20 @@ export class FirebaseService {
 
   // Agregar un documetno
   addDocumento(path: string, data: any) {
-    return addDoc(collection(getFirestore(), path), data)
+    return addDoc(collection(getFirestore(), path), data);
   }
 
+  // Update Salida
+  updateDocument(path: string, data: any) {
+    return updateDoc(doc(getFirestore(), path), data);
+  }
+  // Delete Salida
+  deleteDocument(path: string) {
+    //return deleteDoc(doc(getFirestore(), path))
+    const firestore: Firestore = getFirestore(); // Obtén la instancia de Firestore
 
+    const documentRef = doc(firestore, path); // Crea una referencia al documento que deseas eliminar
+
+    return deleteDoc(documentRef); // Elimina el documento y devuelve una promesa
+  }
 }

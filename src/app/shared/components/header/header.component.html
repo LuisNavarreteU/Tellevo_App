@@ -4,15 +4,16 @@
     <ion-buttons slot="start">
       <!-- BACK BUTTON -->
       <ion-back-button *ngIf="backButton" [defaultHref]="backButton"></ion-back-button>
-     
+      <!-- CLOSE BUTTON -->
+      <ion-button *ngIf="closeButton" (click)="signOut()">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
       <!-- DISMISS MODAL -->
       <ion-button (click)="dissmissModal()" *ngIf="IsModal">
         <ion-icon name="close-circle-outline"></ion-icon>
       </ion-button>
 
     </ion-buttons>
-
-
 
 
     <ion-title>
